@@ -100,8 +100,8 @@
           Name: vprofile_IGW
       register: igw_out
 
-    - name: Set up public subnet route table
-      amazon.aws.ec2_vpc_route_table:
+- name: Set up public subnet route table
+  amazon.aws.ec2_vpc_route_table:
         vpc_id: "{{vpcout.vpc.id}}"
         region: "{{ region }}"
         tags:
@@ -115,19 +115,19 @@
             gateway_id: "{{ igw.gateway_id }}"
           - dest: 0.0.0.0/0
             gateway_id: "{{ igw.gateway_id }}"
-      register: pubRT_out
+        register: pubRT_out
 
-    - name: Create new nat gateway and allocate new EIP if a nat gateway does not yet exist in the subnet.
-      ec2_vpc_nat_gateway:
+- name: Create new nat gateway and allocate new EIP if a nat gateway does not yet exist in the subnet.
+  ec2_vpc_nat_gateway:
         state: "{{state}}"
         subnet_id: "{{ pubsub1_out.subnet.id }}"
         wait: yes
         region: "{{ region }}"
         if_exist_do_not_create: true
-      register: NATGW_out
+  register: NATGW_out
 
-    - name: Set up Private subnet route table
-      ec2_vpc_route_table:
+- name: Set up Private subnet route table
+  ec2_vpc_route_table:
         vpc_id: "{{vpcout.vpc.id}}"
         region: "{{ region }}"
         tags:
@@ -141,9 +141,9 @@
             gateway_id: "{{ NATGW_out.nat_gateway_id }}"
         register: privRT_out
 
-    - debug:
+- debug:
         var: "{{item}}"
-      loop:
+  loop:
         - vpcout.vpc.id
         - pubsub1_out.subnet.id
         - pubsub2_out.subnet.id
@@ -156,7 +156,7 @@
         - NATGW_out.nat_gateway_id
         - privRT_out.route_table.id
 
-    - set_fact:
+- set_fact:
         vpcid: "{{vpcout.vpc.id}}"
         pubsub1id: "{{ pubsub1_out.subnet.id }}"
         pubsub2id: "{{ pubsub2_out.subnet.id }}"
@@ -170,8 +170,8 @@
         privRTid: "{{ privRT_out.route_table.id }}"
         cacheable: yes
 
-    - name: Create variables file for vpc output
-      copy:
+- name: Create variables file for vpc output
+  copy:
         content: "vpcid: {{ vpcout.vpc.id }}\npubsub1id: {{ pubsub1_out.subnet.id }}\npubsub2id: {{ pubsub2_out.subnet.id }}\npubsub3id: {{ pubsub3_out.subnet.id }}\nprivsub1id: {{ privsub1_out.subnet.id }}\nprivsub2id: {{ privsub2_out.subnet.id }}\nprivsub3id: {{ privsub3_out.subnet.id }}\nigwid: {{ igw_out.gateway_id }}\npubRTid: {{ pubRT_out.route_table.id }}\nNATGWid: {{ NATGW_out.nat_gateway_id }}\nprivRTid: {{ privRT_out.route_table.id }}\n"
         dest: vars/output_vars
 
