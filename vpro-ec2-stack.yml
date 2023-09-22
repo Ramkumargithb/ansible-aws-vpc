@@ -206,7 +206,7 @@
       copy:
         src: loginkey_vpro
         dest: provision-stack/loginkey_vpro
-        mode: 0400
+        mode: 0600
 
     - name: Insert/Update Inventory file provision-stack/inventory-vpro
       blockinfile:
