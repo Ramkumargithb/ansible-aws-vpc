@@ -206,7 +206,8 @@
       copy:
         src: loginkey_vpro.pem
         dest: provision-stack/loginkey_vpro.pem
-        mode: '0400'
+        mode: 0400
+        remote_src: yes
 
     - name: Insert/Update Inventory file provision-stack/inventory-vpro
       blockinfile:
