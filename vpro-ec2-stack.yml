@@ -204,9 +204,9 @@
 
     - name: Copy login key to provision_stack directory
       copy:
-        src: loginkey_vpro.pem
-        dest: provision-stack/loginkey_vpro.pem
-        mode: 0400
+        src: /home/ubuntu/ansible-aws-vpc/provision-stack/loginkey_vpro.pem
+        dest: /path/on/remote/host/loginkey_vpro.pem
+        mode: 0600
         remote_src: yes
 
     - name: Insert/Update Inventory file provision-stack/inventory-vpro
