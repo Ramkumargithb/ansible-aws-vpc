@@ -184,7 +184,6 @@
         purge_instance_ids: true
         security_group_ids: "{{ vproELBSG_out.group_id }}"
         subnets:
-          - "{{ pubsub1id }}"
           - "{{ pubsub2id }}"
           - "{{ pubsub3id }}"
         listeners:
