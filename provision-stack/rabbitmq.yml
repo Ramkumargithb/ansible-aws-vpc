@@ -15,7 +15,6 @@
         state: present
       tags:
         - package
-        -
 
     - name: Install Erlang
       apt:
