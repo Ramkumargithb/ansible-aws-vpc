@@ -6,12 +6,13 @@
     - name: Install Erlang Repository Package
       apt:
         deb: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+
       tags:
         - package
 
     - name: Add an Erlang Solution public Key
       apt_key:
-        url: https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc
+        url: http://binaries.erlang-solutions.com/debian/dists/squeeze/Release.gpg
         state: present
       tags:
         - package
